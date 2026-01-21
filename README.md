@@ -164,19 +164,32 @@ python scripts/evaluate.py --test_dir ./data/test
 
 ```bash
 .
-├── data/                       # Audio database (train/test)
-│   ├── train/                  # Organized by language & speaker
-│   └── test/                   # Unseen data for evaluation
-├── All_Gaussians/              # GMMs with 4 → 512 components (comparative study)
-├── trained_models/             # BIC-selected optimal GMMs
-├── trained_models_per_person/  # Speaker-dependent GMMs
-├── notebooks/                  # Training, evaluation, DET & BIC analysis
-├── src/
-│   ├── preprocessing.py        # Hybrid silence removal (KMeans + GMM)
-│   ├── features.py             # MFCC + Delta extraction
-│   └── models.py               # GMM training, scoring, BIC selection
-├── App.py                      # Graphical application (end-user interface)
-└── requirements.txt
+PROJECT_FINAL/
+├── projet_langue/ # Application-oriented: Language Identification
+│ ├── All_Gaussians/ # GMMs with varying number of components (comparative study)
+│ ├── data/ # Language datasets (train/test)
+│ ├── trained_models/ # Optimal GMMs selected via BIC
+│ ├── App.py # Main application (GUI / end-user interface)
+│ ├── matrice_confusion.ipynb # Confusion matrix analysis (Language ID)
+│ ├── script.ipynb # Training and evaluation scripts
+│ ├── speaker.ipynb # Auxiliary experiments
+│ ├── output.png # Sample identification output
+│ ├── outputmatrice.png # Global confusion matrix
+│ ├── outputmatrice10s.png # Confusion matrix (10s segments)
+│ └── outputmatrice15s.png # Confusion matrix (15s segments)
+│
+├── projet_locuteur/ # Research-only: Speaker Verification methodology
+│ ├── dataset_loc_preparé/ # Prepared speaker datasets
+│ ├── locloc/ # Intermediate experimental data
+│ ├── trained_models_per_person/ # Speaker-dependent GMMs
+│ ├── speaker.ipynb # FAR / FRR / EER / DET analysis
+│ ├── detlocuteur.png # DET curve (speaker verification)
+│ ├── outputfarvsfrr.png # FAR vs FRR curves
+│ └── top10.png # Top-10 score distribution analysis
+│
+├── .gitattributes
+├── .gitignore
+└── README.md
 ```
 
 ---
