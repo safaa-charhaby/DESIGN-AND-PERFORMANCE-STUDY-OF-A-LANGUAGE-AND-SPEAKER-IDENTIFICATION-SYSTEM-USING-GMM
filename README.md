@@ -310,77 +310,85 @@ This study evaluates the speaker verification subsystem using standard biometric
 
 Importantly, this section relies on the same codebase, feature extraction pipeline, and preprocessing logic used for language and gender identification, ensuring full technical coherence across the project.
 
-1️⃣ Processing Logic and Dataset Preparation
+1️⃣ Processing Logic and Dataset Preparation (Summary)
 
-The speaker verification pipeline is fully automated and operates at the speaker level (F1, F2, M1, etc.). Each speaker is modeled independently using Gaussian Mixture Models.
+The speaker verification pipeline is fully automated and operates at the speaker level (F1, F2, M1, etc.). Each speaker is modeled independently using Gaussian Mixture Models (GMM).
 
-Feature Extraction
+Feature extraction: 13 MFCC coefficients (Hamming window) + Delta coefficients to capture temporal dynamics.
 
-Extraction of 13 MFCC coefficients using a Hamming window to characterize the unique vocal tract signature of each individual.
+Hybrid silence removal: combination of K-Means and GMM-based energy modeling to remove silence and noise while preserving speech integrity.
 
-Addition of Delta coefficients to capture temporal dynamics of speech.
-
-Frame-level features are retained only after hybrid silence removal.
-
-Hybrid Silence Removal
-
-Silence and non-speech segments are eliminated using a hybrid energy-based approach:
-
-K-Means clustering on short-term energy
-
-GMM modeling of energy distributions
-
-Adaptive threshold selection combining both methods
-
-This ensures that silence is removed exactly as in the original study, preserving speech integrity while reducing noise.
+Only speech-relevant frames are retained for modeling.
 
 2️⃣ Training Dataset Automation
 
-For each speaker, the system automatically generates multiple training configurations by varying two key parameters:
+For each speaker, multiple models are trained automatically by varying:
 
-Training duration: 1 minute or 2 minutes
+Training duration: 1 min or 2 min
 
-GMM complexity: 32, 64, 128, and 256 components
+Model complexity: 32, 64, 128, 256 Gaussians
 
-Training Logic
+Training logic:
 
 Audio files are concatenated per speaker.
 
-The first 60 or 120 seconds are selected depending on availability.
+The first 60 or 120 seconds are selected (if available).
 
-A verification step ensures sufficient audio length before model training.
+Each trained model is saved using a structured naming scheme, e.g.:
 
-Each configuration results in a trained GMM saved under a structured directory hierarchy:
-```text
 ./trained_models_per_person/Amina/Amina_1min_32.gmm
-```
-This systematic storage enables direct and fair comparison between models of different complexities.
+
+This organization enables a fair and systematic comparison between model complexities.
 
 3️⃣ Test Dataset Generation
 
-To ensure standardized evaluation, the test dataset is generated automatically:
+To ensure standardized evaluation:
 
-30 test segments per speaker
+30 test segments per speaker are generated automatically
 
-Segment durations: 5s, 10s, and 15s
+Segment durations: 5s, 10s, 15s
 
-Intelligent step (overlap) computation distributes segments across the full audio length
+An adaptive overlap (step) strategy distributes segments across the full recording
 
-Each segment is exported as a .wav file and stored in test_segments/ using consistent naming conventions. This guarantees a balanced and diverse test set for robust evaluation.
+All segments are exported as .wav files using consistent naming, ensuring a balanced and reproducible test set.
 
-4️⃣ Score Computation (Log-Likelihood)
+4️⃣ Score Computation and Decision Threshold
 
-For each test segment, a log-likelihood score is computed against every speaker model:
+For each test segment, a log-likelihood score is computed against every speaker model.
 
-High (less negative or positive) scores indicate strong correspondence with the model.
+Score computation (average log-likelihood):
+```bash
+Score = (1 / T) * Σ log p(x_t | λ)
+```
+Where:
 
-Low (highly negative) scores indicate mismatch.
+x_t are MFCC feature vectors
 
-This results in two distinct score distributions:
+λ is the GMM of a speaker
 
-Target (Client) scores: test speaker matches the model (hypothesis H₀)
+T is the number of frames
 
-Impostor (Non-target) scores: test speaker differs from the model (hypothesis H₁)
+Interpretation:
+
+Higher score (less negative) → strong similarity with the speaker model
+
+Lower score (very negative) → mismatch
+
+This produces two score distributions:
+
+Client (Target) scores: test speaker matches the model (H₀)
+
+Impostor (Non-target) scores: test speaker differs from the model (H₁)
+
+Decision Threshold (θ)
+
+A decision threshold θ is applied to the scores:
+
+If Score ≥ θ → speaker accepted
+
+If Score < θ → speaker rejected
+
+By sweeping θ across the score range, the system computes FAR, FRR, and identifies the EER, which represents the optimal trade-off between security and usability.
 
 5️⃣ Decision Threshold and Error Metrics
 
