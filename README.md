@@ -351,9 +351,9 @@ The first 60 or 120 seconds are selected depending on availability.
 A verification step ensures sufficient audio length before model training.
 
 Each configuration results in a trained GMM saved under a structured directory hierarchy:
-
+```text
 ./trained_models_per_person/Amina/Amina_1min_32.gmm
-
+```
 This systematic storage enables direct and fair comparison between models of different complexities.
 
 3️⃣ Test Dataset Generation
@@ -393,13 +393,14 @@ If score < θ → identity rejected
 By sweeping θ across the full score range, we compute:
 
 FAR (False Acceptance Rate): impostors incorrectly accepted (security risk)
+```text
 
 FAR(θ) = Number of impostor scores ≥ θ / Total number of impostor trials
-
+```
 FRR (False Rejection Rate): genuine speakers incorrectly rejected (usability loss)
-
+```text
 FRR(θ) = Number of rejected client tests / Total number of client tests
-
+```
 The Equal Error Rate (EER) corresponds to the operating point where FAR = FRR.
 
 6️⃣ Experimental Results and Best Configuration
