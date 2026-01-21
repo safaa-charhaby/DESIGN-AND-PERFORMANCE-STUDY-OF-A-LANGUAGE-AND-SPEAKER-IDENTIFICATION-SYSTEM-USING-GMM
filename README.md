@@ -1,146 +1,122 @@
-This is a comprehensive, GitHub-ready README.md file for your project. It combines the technical depth of your academic work with a modern, professional layout.
+# 🎙️ GMM-Based Language & Speaker Identification System
 
-🎙️ GMM-Based Language & Speaker Identification System
+**Design, Implementation, and Performance Evaluation**
 
-Design, Implementation, and Performance Evaluation
+![Python](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge\&logo=python)
+![Scikit-Learn](https://img.shields.io/badge/ML-Scikit--Learn-orange?style=for-the-badge\&logo=scikit-learn)
+![Academic Project](https://img.shields.io/badge/Project-Academic-success?style=for-the-badge)
 
-![alt text](https://img.shields.io/badge/Python-3.9+-blue?style=for-the-badge&logo=python)
+---
 
+## 📌 Project Overview
 
-![alt text](https://img.shields.io/badge/ML-Scikit--Learn-orange?style=for-the-badge&logo=scikit-learn)
+This repository presents a **high-performance system for Language Identification (LID)** and **Speaker Identification / Verification (SID)**. The system relies on **Gaussian Mixture Models (GMM)** combined with **MFCC acoustic features** to classify speech signals across multiple languages and to verify speaker identities with high precision.
 
+The project is designed with a **research-oriented mindset**, emphasizing statistical modeling, rigorous evaluation, and reproducibility, while remaining fully usable as a standalone application.
 
-![alt text](https://img.shields.io/badge/Project-Academic-success?style=for-the-badge)
+---
 
-📌 Project Overview
+## 🌟 Key Features
 
-This repository contains a high-performance system for Language Identification (LID) and Speaker Identification/Verification (SID). By leveraging Gaussian Mixture Models (GMM) and MFCC acoustic features, the system classifies speech signals across five different languages and verifies specific speaker identities with high precision.
+* **Multilingual Language Identification**
+  Supports **French, English, Dutch, Darija (Moroccan Arabic), and Japanese** using statistical acoustic modeling.
 
-🌟 Key Features
+* **Hybrid Silence Removal (Key Contribution)**
+  A robust algorithm combining **K-Means**, **GMM-based energy modeling**, and **energy thresholding** to preserve speech integrity while effectively suppressing noise.
 
-Multilingual Support: Recognizes English, French, Dutch, Darija (Moroccan Arabic), and Japanese.
+* **GMM Optimization Study**
+  Extensive evaluation of **4 → 512 Gaussian components**, analyzing the trade-off between **accuracy** and **computational cost**.
 
-Hybrid Preprocessing: Advanced silence removal using a combination of K-Means, GMM, and Energy-based thresholding.
+* **Segment-Length Analysis**
+  Systematic testing on **5s, 10s, and 15s** segments to evaluate robustness against short utterances.
 
-Model Optimization: Automated selection of Gaussian components using the Bayesian Information Criterion (BIC).
+* **End-to-End Application**
+  Audio → Identification → Transcription → Translation → **Speech Synthesis (TTS)**.
 
-Full Pipeline: From raw audio to transcription, translation, and text-to-speech synthesis.
+---
 
-Performance Analysis: Comprehensive evaluation using DET curves, EER (Equal Error Rate), and confusion matrices.
+## 🧠 System Architecture
 
-🧠 System Architecture
+The system is organized around **three main subsystems**, forming a complete speech-processing pipeline:
 
-The system follows a modular statistical pattern recognition pipeline:
+* **Language Identification (LID)**: determines the spoken language from an audio signal.
+* **Speaker Identification / Verification (SID)**: recognizes or verifies the speaker’s identity.
+* **Final Application**: integrates identification, transcription, translation, and speech synthesis.
 
-code
-Mermaid
-download
-content_copy
-expand_less
+```mermaid
 graph LR
     A[Audio Input] --> B[Hybrid Silence Removal]
     B --> C[MFCC Feature Extraction]
     C --> D[GMM Modeling / EM Algorithm]
     D --> E{Decision Logic}
-    E --> F[Language ID]
+    E --> F[Language Identification]
     E --> G[Speaker Verification]
-    F --> H[Translation & TTS]
-1. Acoustic Features (MFCC)
+    F --> H[ASR → Translation → TTS]
+```
 
-We extract 13-20 Mel-Frequency Cepstral Coefficients to capture the "shape" of the vocal tract, providing a robust representation of speech independent of pitch.
+The final stage allows **message reduction, translation, and generation of a synthesized speech signal in the target language**, enabling full understanding of the original spoken content.
 
-2. Statistical Modeling
+---
 
-Each language and speaker is modeled by a GMM:
+## 📊 Experimental Results
 
-𝑝
-(
-𝑥
-∣
-𝜆
-)
-=
-∑
-𝑖
-=
-1
-𝑀
-𝑤
-𝑖
-𝑔
-(
-𝑥
-∣
-𝜇
-𝑖
-,
-Σ
-𝑖
-)
-p(x∣λ)=
-i=1
-∑
-M
-	​
+### 🔤 Language Identification
 
-w
-i
-	​
+* **Darija & Dutch**: nearly **100% recognition** from 32 Gaussians
+* **English ↔ French**: strong confusion due to phonetic proximity
+* **Japanese**: lower accuracy, often confused with French
 
-g(x∣μ
-i
-	​
+➡️ Increasing the number of Gaussians **does not always improve performance**. A **moderate complexity (32 GMMs)** offers the best compromise between robustness and generalization.
 
-,Σ
-i
-	​
+### 🗣️ Speaker Verification (Biometric Evaluation)
 
-)
+The verification protocol relies on **log-likelihood scores** and a **variable decision threshold (θ)**:
 
-Where parameters are optimized using the Expectation-Maximization (EM) algorithm.
+* **FAR (False Acceptance Rate)**: impostors incorrectly accepted
+* **FRR (False Rejection Rate)**: genuine speakers incorrectly rejected
+* **EER (Equal Error Rate)**: point where FAR = FRR
 
-📊 Experimental Results
-Language Identification
+**Best configuration**:
 
-The system shows remarkable performance in distinguishing distinct phonological structures:
+| Metric            | Value      |
+| ----------------- | ---------- |
+| Model             | GMM-256    |
+| Training Duration | 1 minute   |
+| Test Segment      | 10 seconds |
+| EER               | **5.4%**   |
+| Reliability       | **94.6%**  |
 
-Highest Accuracy: Darija & Dutch.
+DET curves show a **strong separation** between genuine and impostor score distributions, confirming high discriminative power.
 
-Challenge Areas: English vs. French (phonetic overlap).
+------|--------|
+| Optimal Model | GMM-256 |
+| Minimum Training Data | 60 seconds |
+| Equal Error Rate (EER) | 5.4% |
+| Overall Reliability | 94.6% |
 
-Optimal Complexity: 32 Gaussian components provide the best trade-off between speed and accuracy.
+---
 
-Speaker Verification Performance
-Metric	Result
-Optimal Model	GMM-256
-Min. Training Data	60 Seconds
-Equal Error Rate (EER)	5.4%
-Overall Reliability	94.6%
-🛠️ Installation & Setup
-Prerequisites
+## 🛠️ Installation & Setup
 
-Python 3.9+
+### Prerequisites
 
-FFmpeg (for audio processing)
+* **Python 3.9+**
+* **FFmpeg** (required for audio preprocessing)
 
-Installation
-code
-Bash
-download
-content_copy
-expand_less
+### Installation
+
+```bash
 # Clone the repository
 git clone https://github.com/yourusername/GMM-Speech-System.git
 cd GMM-Speech-System
 
 # Install dependencies
 pip install -r requirements.txt
-Requirements
-code
-Text
-download
-content_copy
-expand_less
+```
+
+### Requirements
+
+```text
 numpy
 librosa
 scikit-learn
@@ -149,68 +125,309 @@ gTTS
 pyttsx3
 matplotlib
 pandas
-🚀 Usage
-1. Training
+```
 
-To train the models on your local dataset:
+---
 
-code
-Bash
-download
-content_copy
-expand_less
+## 🚀 Usage
+
+### 1️⃣ Training
+
+Train language and speaker models with configurable GMM complexity:
+
+```bash
 python scripts/train_all.py --data ./data/train --gaussians 32
-2. Running the GUI Application
+```
 
-Launch the interactive dashboard for real-time identification and translation:
+### 2️⃣ Application Interface
 
-code
-Bash
-download
-content_copy
-expand_less
+The GUI follows a **four-step pipeline**:
+
+1. **Audio Loading** → Hybrid silence removal
+2. **Identification** → Language / Speaker via GMM scores
+3. **Transcription & Translation** → Speech-to-text + MT
+4. **Speech Synthesis** → Vocal output in the target language
+
+```bash
 python App.py
-3. Testing
+```
 
-Evaluate the model against test segments (5s, 10s, 15s):
+### 3️⃣ Evaluation
 
-code
-Bash
-download
-content_copy
-expand_less
+```bash
 python scripts/evaluate.py --test_dir ./data/test
-📁 Project Structure
-code
-Bash
-download
-content_copy
-expand_less
+```
+
+---
+
+## 📁 Project Structure
+
+```bash
 .
-├── All_Gaussians/              # Checkpoints for different GMM sizes
-├── trained_models/             # Production-ready BIC-selected models
-├── data/
-│   ├── train/                  # Audio organized by language/speaker
-│   └── test/                   # Evaluation segments
-├── notebooks/                  # Statistical analysis and DET curves
+├── data/                       # Audio database (train/test)
+│   ├── train/                  # Organized by language & speaker
+│   └── test/                   # Unseen data for evaluation
+├── All_Gaussians/              # GMMs with 4 → 512 components (comparative study)
+├── trained_models/             # BIC-selected optimal GMMs
+├── trained_models_per_person/  # Speaker-dependent GMMs
+├── notebooks/                  # Training, evaluation, DET & BIC analysis
 ├── src/
-│   ├── preprocessing.py        # Hybrid silence removal logic
-│   ├── features.py             # MFCC extraction
-│   └── models.py               # GMM wrapper classes
-├── App.py                      # Main Graphical User Interface
+│   ├── preprocessing.py        # Hybrid silence removal (KMeans + GMM)
+│   ├── features.py             # MFCC + Delta extraction
+│   └── models.py               # GMM training, scoring, BIC selection
+├── App.py                      # Graphical application (end-user interface)
 └── requirements.txt
-🎓 Academic Context
+```
 
-Institution: [Your University Name]
+---
 
-Academic Year: 2025–2026
+## 🔬 Methodology Summary (For Academic Review)
 
-Supervisor: Prof. Jamal Kharroubi
+This project follows a **rigorous experimental methodology**, aligned with standard practices in statistical speech processing and biometric evaluation.
 
-Author: [Your Name]
+### 1️⃣ Data Preparation
 
-📜 License
+* Audio signals are stored in **WAV format** and organized by **language** and **speaker**.
+* Datasets are split into **training** and **test** subsets to ensure unbiased evaluation.
+* For speaker experiments, audio is segmented into **1-minute and 2-minute** training samples, while test segments are fixed to **5s, 10s, and 15s**.
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+### 2️⃣ Preprocessing & Silence Removal (Hybrid Threshold)
 
-⭐️ If you find this project useful, please consider giving it a star!
+A **hybrid silence removal algorithm** is applied prior to feature extraction:
+
+* **K-Means** clustering on short-term energy
+* **GMM modeling** of energy distributions
+* **Adaptive hybrid threshold** combining both approaches
+
+This method:
+
+* Preserves speech continuity (avoids word truncation)
+* Reduces background noise effectively
+* Outperforms standalone K-Means or GMM thresholds
+
+➡️ Experimental comparisons show that the hybrid threshold yields the **most stable MFCC trajectories**, especially for female voices.
+
+### 3️⃣ Feature Extraction
+
+* **MFCC (13 coefficients)** extracted using a **Hamming window**
+* Delta coefficients added to capture **temporal dynamics**
+* Frame-level features aggregated per utterance
+
+### 4️⃣ Statistical Modeling
+
+* One **GMM per language** (LID) and **one GMM per speaker** (SID)
+* EM algorithm used for parameter estimation
+* Number of Gaussians varied from **4 to 512**
+
+### 5️⃣ Model Selection
+
+* **Bayesian Information Criterion (BIC)** used to select optimal models
+* Prevents overfitting by penalizing excessive complexity
+* Optimal configurations stored in `trained_models/`
+
+---
+
+## 📈 Experimental Studies & Figures
+
+This section summarizes the **main experimental studies** conducted during the project. Detailed plots are available in the `notebooks/` directory.
+
+### 🔢 Study 1: Number of Gaussian Components (BIC Analysis)
+
+**Objective**: Determine the optimal GMM complexity.
+
+* Tested values: **4, 8, 16, 32, 64, 128, 256, 512**
+* Evaluation metric: **BIC score**
+
+📌 **Observation**:
+
+* BIC decreases with model complexity up to a point
+* A minimum is reached around **32–64 Gaussians** for language ID
+* Higher values increase computation without consistent gains
+
+<img width="855" height="547" alt="output" src="https://github.com/user-attachments/assets/db1a492f-49c0-4a61-b6e1-bd754c71febf" />
+
+📊 *Figure*: BIC score vs. number of Gaussians (Men + Women combined)
+
+---
+
+### ⏱️ Study 2: Impact of Test Segment Length
+
+**Objective**: Evaluate robustness against short utterances.
+
+* Segment lengths: **5s, 10s, 15s**
+
+📌 **Observation**:
+
+* 5s segments show higher variance and lower accuracy
+* 10s segments offer a strong balance between latency and reliability
+* 15s segments provide marginal improvements
+
+📊 *Figure*: Accuracy vs. segment length
+
+---
+
+### 🧩 Study 3: Confusion Matrix Analysis (Language ID)
+
+Confusion matrices highlight **inter-language confusions**:
+
+* **Darija & Dutch**: near-perfect recognition
+* **English ↔ French**: strong bidirectional confusion
+* **Japanese**: often confused with French
+
+📌 **Key Insight**:
+Increasing GMM components does **not** systematically improve results. A **moderate model (32 GMMs)** is more robust.
+
+<img width="2389" height="955" alt="outputmatrice" src="https://github.com/user-attachments/assets/5a5ffb98-f9f1-4ac6-a9c9-f882e83f5c0e" />
+
+📊 *Figure*: Confusion matrices for 5s matrice
+
+<img width="2389" height="955" alt="outputmatrice10s" src="https://github.com/user-attachments/assets/a2eba3eb-a144-4cbe-b413-cca10a7a7395" />
+
+📊 *Figure*: Confusion matrices for 10s matrice
+
+<img width="2389" height="955" alt="outputmatrice15s" src="https://github.com/user-attachments/assets/9a1425c2-b183-4358-be9d-10f7622f525c" />
+
+📊 *Figure*: Confusion matrices for 15s matrice
+---
+
+🗣️ Study 4: Speaker Verification (DET & EER)
+
+This study evaluates the speaker verification subsystem using standard biometric evaluation protocols, with a strong emphasis on methodological consistency, automation, and rigorous performance analysis.
+
+Importantly, this section relies on the same codebase, feature extraction pipeline, and preprocessing logic used for language and gender identification, ensuring full technical coherence across the project.
+
+1️⃣ Processing Logic and Dataset Preparation
+
+The speaker verification pipeline is fully automated and operates at the speaker level (F1, F2, M1, etc.). Each speaker is modeled independently using Gaussian Mixture Models.
+
+Feature Extraction
+
+Extraction of 13 MFCC coefficients using a Hamming window to characterize the unique vocal tract signature of each individual.
+
+Addition of Delta coefficients to capture temporal dynamics of speech.
+
+Frame-level features are retained only after hybrid silence removal.
+
+Hybrid Silence Removal
+
+Silence and non-speech segments are eliminated using a hybrid energy-based approach:
+
+K-Means clustering on short-term energy
+
+GMM modeling of energy distributions
+
+Adaptive threshold selection combining both methods
+
+This ensures that silence is removed exactly as in the original study, preserving speech integrity while reducing noise.
+
+2️⃣ Training Dataset Automation
+
+For each speaker, the system automatically generates multiple training configurations by varying two key parameters:
+
+Training duration: 1 minute or 2 minutes
+
+GMM complexity: 32, 64, 128, and 256 components
+
+Training Logic
+
+Audio files are concatenated per speaker.
+
+The first 60 or 120 seconds are selected depending on availability.
+
+A verification step ensures sufficient audio length before model training.
+
+Each configuration results in a trained GMM saved under a structured directory hierarchy:
+
+./trained_models_per_person/Amina/Amina_1min_32.gmm
+
+This systematic storage enables direct and fair comparison between models of different complexities.
+
+3️⃣ Test Dataset Generation
+
+To ensure standardized evaluation, the test dataset is generated automatically:
+
+30 test segments per speaker
+
+Segment durations: 5s, 10s, and 15s
+
+Intelligent step (overlap) computation distributes segments across the full audio length
+
+Each segment is exported as a .wav file and stored in test_segments/ using consistent naming conventions. This guarantees a balanced and diverse test set for robust evaluation.
+
+4️⃣ Score Computation (Log-Likelihood)
+
+For each test segment, a log-likelihood score is computed against every speaker model:
+
+High (less negative or positive) scores indicate strong correspondence with the model.
+
+Low (highly negative) scores indicate mismatch.
+
+This results in two distinct score distributions:
+
+Target (Client) scores: test speaker matches the model (hypothesis H₀)
+
+Impostor (Non-target) scores: test speaker differs from the model (hypothesis H₁)
+
+5️⃣ Decision Threshold and Error Metrics
+
+A variable decision threshold (θ) governs acceptance or rejection:
+
+If score > θ → identity accepted
+
+If score < θ → identity rejected
+
+By sweeping θ across the full score range, we compute:
+
+FAR (False Acceptance Rate): impostors incorrectly accepted (security risk)
+
+\[
+\text{FAR}(\theta) =
+\frac{\text{Number of impostor scores}}
+{\text{Total number of impostor trials}}
+\]
+
+
+FRR (False Rejection Rate): genuine speakers incorrectly rejected (usability loss)
+
+\[
+\text{FRR}(\theta) =
+\frac{\text{Nombre de tests clients rejetés}}
+{\text{Nombre total de tests clients}}
+\]
+
+The Equal Error Rate (EER) corresponds to the operating point where FAR = FRR.
+
+6️⃣ Experimental Results and Best Configuration
+
+📌 Best-performing configuration:
+
+Model: GMM-256
+
+Training duration: 1 minute per speaker
+
+Test duration: 10 seconds
+
+Equal Error Rate (EER): ≈ 5.4%
+
+System reliability: ≈ 94.6%
+
+This configuration provides the optimal trade-off between discrimination performance and computational efficiency.
+
+7️⃣ DET and EER Curve Analysis
+
+FAR vs. FRR curves illustrate the inverse relationship between security and accessibility.
+
+The DET curve (logarithmic scale) remains close to the axes, demonstrating strong separation between target and impostor score distributions.
+
+The intersection of FAR and FRR curves clearly identifies the EER operating point.
+
+📈 Figures:
+
+
+<img width="1141" height="627" alt="top10" src="https://github.com/user-attachments/assets/d12befa6-77bf-4b35-91ec-21e04dee7de5" />
+
+Comparison of DET curves for top-performing configurations
+
+<img width="1490" height="489" alt="outputfarvsfrr" src="https://github.com/user-attachments/assets/515815ab-8019-420c-b7fb-fc9d7aa36605" />
+
+EER visualization for the optimal GMM-256 model
