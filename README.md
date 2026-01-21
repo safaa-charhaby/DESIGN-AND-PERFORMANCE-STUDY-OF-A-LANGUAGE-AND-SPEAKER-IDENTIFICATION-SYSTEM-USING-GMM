@@ -87,8 +87,8 @@ The verification protocol relies on **log-likelihood scores** and a **variable d
 | Reliability       | **94.6%**  |
 
 DET curves show a **strong separation** between genuine and impostor score distributions, confirming high discriminative power.
-
-------|--------|
+| Metric            | Value      |
+| ----------------- | ---------- |
 | Optimal Model | GMM-256 |
 | Minimum Training Data | 60 seconds |
 | Equal Error Rate (EER) | 5.4% |
