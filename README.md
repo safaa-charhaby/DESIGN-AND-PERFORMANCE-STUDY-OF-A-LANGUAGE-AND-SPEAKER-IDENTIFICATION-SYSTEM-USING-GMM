@@ -304,13 +304,13 @@ Increasing GMM components does **not** systematically improve results. A **moder
 
 ---
 
-🗣️ Study 4: Speaker Verification (DET & EER)
+## 🗣️ Study 4: Speaker Verification (DET & EER)
 
 This study evaluates the speaker verification subsystem using standard biometric evaluation protocols, with a strong emphasis on methodological consistency, automation, and rigorous performance analysis.
 
 Importantly, this section relies on the same codebase, feature extraction pipeline, and preprocessing logic used for language and gender identification, ensuring full technical coherence across the project.
 
-1️⃣ Processing Logic and Dataset Preparation (Summary)
+### 1️⃣ Processing Logic and Dataset Preparation (Summary)
 
 The speaker verification pipeline is fully automated and operates at the speaker level (F1, F2, M1, etc.). Each speaker is modeled independently using Gaussian Mixture Models (GMM).
 
@@ -320,7 +320,7 @@ Hybrid silence removal: combination of K-Means and GMM-based energy modeling to 
 
 Only speech-relevant frames are retained for modeling.
 
-2️⃣ Training Dataset Automation
+### 2️⃣ Training Dataset Automation
 
 For each speaker, multiple models are trained automatically by varying:
 
@@ -340,7 +340,7 @@ Each trained model is saved using a structured naming scheme, e.g.:
 
 This organization enables a fair and systematic comparison between model complexities.
 
-3️⃣ Test Dataset Generation
+### 3️⃣ Test Dataset Generation
 
 To ensure standardized evaluation:
 
@@ -352,7 +352,7 @@ An adaptive overlap (step) strategy distributes segments across the full recordi
 
 All segments are exported as .wav files using consistent naming, ensuring a balanced and reproducible test set.
 
-4️⃣ Score Computation and Decision Threshold
+### 4️⃣ Score Computation and Decision Threshold
 
 For each test segment, a log-likelihood score is computed against every speaker model.
 
@@ -368,7 +368,7 @@ x_t are MFCC feature vectors
 
 T is the number of frames
 
-Interpretation:
+#### Interpretation:
 
 Higher score (less negative) → strong similarity with the speaker model
 
@@ -380,7 +380,7 @@ Client (Target) scores: test speaker matches the model (H₀)
 
 Impostor (Non-target) scores: test speaker differs from the model (H₁)
 
-Decision Threshold (θ)
+#### Decision Threshold (θ)
 
 A decision threshold θ is applied to the scores:
 
@@ -390,7 +390,7 @@ If Score < θ → speaker rejected
 
 By sweeping θ across the score range, the system computes FAR, FRR, and identifies the EER, which represents the optimal trade-off between security and usability.
 
-5️⃣ Decision Threshold and Error Metrics
+### 5️⃣ Decision Threshold and Error Metrics
 
 A variable decision threshold (θ) governs acceptance or rejection:
 
@@ -411,7 +411,7 @@ FRR(θ) = Number of rejected client tests / Total number of client tests
 ```
 The Equal Error Rate (EER) corresponds to the operating point where FAR = FRR.
 
-6️⃣ Experimental Results and Best Configuration
+### 6️⃣ Experimental Results and Best Configuration
 
 📌 Best-performing configuration:
 
@@ -427,7 +427,7 @@ System reliability: ≈ 94.6%
 
 This configuration provides the optimal trade-off between discrimination performance and computational efficiency.
 
-7️⃣ DET and EER Curve Analysis
+### 7️⃣ DET and EER Curve Analysis
 
 FAR vs. FRR curves illustrate the inverse relationship between security and accessibility.
 
