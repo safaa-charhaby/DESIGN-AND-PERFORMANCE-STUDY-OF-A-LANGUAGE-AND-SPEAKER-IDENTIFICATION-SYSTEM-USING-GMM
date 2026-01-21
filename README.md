@@ -380,11 +380,8 @@ By sweeping θ across the full score range, we compute:
 
 FAR (False Acceptance Rate): impostors incorrectly accepted (security risk)
 
-\[
-\text{FAR}(\theta) =
-\frac{\text{Number of impostor scores}}
-{\text{Total number of impostor trials}}
-\]
+ext{FAR}( heta) = rac{ ext{Number of impostor scores } > heta}{ ext{Total number of impostor trials}}
+
 
 
 FRR (False Rejection Rate): genuine speakers incorrectly rejected (usability loss)
