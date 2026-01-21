@@ -48,7 +48,6 @@ The system implements a statistical pattern recognition pipeline:
 3.  **Modeling:** Statistical modeling using GMM with Expectation-Maximization (EM).
 4.  **Selection:** Model optimization via **Bayesian Information Criterion (BIC)**.
 
-```mermaid
 graph TD
     A[Audio Input] --> B[Hybrid Silence Removal]
     B --> C[MFCC Extraction]
@@ -141,4 +140,3 @@ Developed for the 2025–2026 Academic Term.
 If you find this research helpful, please consider giving it a ⭐!
 
 </div>
-```
