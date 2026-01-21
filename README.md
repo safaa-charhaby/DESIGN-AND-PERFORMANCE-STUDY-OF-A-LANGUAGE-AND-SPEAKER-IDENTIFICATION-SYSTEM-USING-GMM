@@ -380,17 +380,11 @@ By sweeping θ across the full score range, we compute:
 
 FAR (False Acceptance Rate): impostors incorrectly accepted (security risk)
 
-ext{FAR}( heta) = rac{ ext{Number of impostor scores } > heta}{ ext{Total number of impostor trials}}
-
-
+FAR(θ) = Number of impostor scores ≥ θ / Total number of impostor trials
 
 FRR (False Rejection Rate): genuine speakers incorrectly rejected (usability loss)
 
-\[
-\text{FRR}(\theta) =
-\frac{\text{Nombre de tests clients rejetés}}
-{\text{Nombre total de tests clients}}
-\]
+FRR(θ) = Number of rejected client tests / Total number of client tests
 
 The Equal Error Rate (EER) corresponds to the operating point where FAR = FRR.
 
