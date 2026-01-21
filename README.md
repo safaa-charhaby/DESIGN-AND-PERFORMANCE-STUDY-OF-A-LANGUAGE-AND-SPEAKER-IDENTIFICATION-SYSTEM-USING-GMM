@@ -218,6 +218,11 @@ This method:
 * Reduces background noise effectively
 * Outperforms standalone K-Means or GMM thresholds
 
+<img width="1085" height="534" alt="image" src="https://github.com/user-attachments/assets/f71b3827-efb0-4cea-a20c-b8a535f1b75b" />
+
+<img width="1086" height="524" alt="image" src="https://github.com/user-attachments/assets/dfb59600-08e2-4303-b238-5e13bda3acbb" />
+
+
 ➡️ Experimental comparisons show that the hybrid threshold yields the **most stable MFCC trajectories**, especially for female voices.
 
 ### 3️⃣ Feature Extraction
