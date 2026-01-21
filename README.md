@@ -301,6 +301,7 @@ Increasing GMM components does **not** systematically improve results. A **moder
 <img width="2389" height="955" alt="outputmatrice15s" src="https://github.com/user-attachments/assets/9a1425c2-b183-4358-be9d-10f7622f525c" />
 
 📊 *Figure*: Confusion matrices for 15s matrice
+
 ---
 
 🗣️ Study 4: Speaker Verification (DET & EER)
